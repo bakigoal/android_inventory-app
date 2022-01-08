@@ -1,28 +1,12 @@
 package com.example.inventory.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.example.inventory.database.entity.Item
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ItemDao {
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(item: Item)
-
-    @Update
-    suspend fun update(item: Item)
-
-    @Delete
-    suspend fun delete(item: Item)
-
-    @Delete
-    suspend fun deleteAll(items: List<Item>)
+interface ItemDao: BaseDao<Item> {
 
     /**
      * Using Flow or LiveData as return type will ensure you get notified whenever the data in the DB changes.
