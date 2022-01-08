@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.inventory.InventoryApplication
 import com.example.inventory.R
 import com.example.inventory.adapter.ItemListAdapter
+import com.example.inventory.database.entity.Item
 import com.example.inventory.databinding.ItemListFragmentBinding
 import com.example.inventory.viewmodel.InventoryViewModel
 import com.example.inventory.viewmodel.InventoryViewModelFactory
@@ -23,9 +24,7 @@ class ItemListFragment : Fragment() {
     private var _binding: ItemListFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: InventoryViewModel by activityViewModels {
-        InventoryViewModelFactory(
-            (activity?.application as InventoryApplication).database.itemDao()
-        )
+        InventoryViewModelFactory((activity?.application as InventoryApplication).database.itemDao())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, s: Bundle?): View {
@@ -35,22 +34,28 @@ class ItemListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val itemListAdapter = ItemListAdapter {}
+        binding.floatingActionButton.setOnClickListener { onFabClick() }
+
+        val itemListAdapter = ItemListAdapter { item -> onItemClick(item) }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this.context)
             adapter = itemListAdapter
         }
-        binding.floatingActionButton.setOnClickListener {
-            val addItemAction = ItemListFragmentDirections.actionItemListFragmentToAddItemFragment(
-                getString(R.string.add_fragment_title)
-            )
-            this.findNavController().navigate(addItemAction)
-        }
 
         viewModel.allItems.observe(viewLifecycleOwner, { items ->
-            items?.let {
-                itemListAdapter.submitList(it)
-            }
+            items?.let { itemListAdapter.submitList(it) }
         })
+    }
+
+    private fun onFabClick() {
+        val addItemAction = ItemListFragmentDirections.actionItemListFragmentToAddItemFragment(
+            getString(R.string.add_fragment_title)
+        )
+        this.findNavController().navigate(addItemAction)
+    }
+
+    private fun onItemClick(item: Item) {
+        val action = ItemListFragmentDirections.actionItemListFragmentToItemDetailFragment(item.id)
+        this.findNavController().navigate(action)
     }
 }
