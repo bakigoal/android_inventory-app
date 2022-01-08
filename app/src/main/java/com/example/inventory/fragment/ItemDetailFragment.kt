@@ -1,4 +1,4 @@
-package com.example.inventory
+package com.example.inventory.fragment
 
 
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.inventory.R
 import com.example.inventory.databinding.FragmentItemDetailBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -20,19 +21,12 @@ class ItemDetailFragment : Fragment() {
     private var _binding: FragmentItemDetailBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, s: Bundle?): View {
         _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /**
-     * Displays an alert dialog to get the user's confirmation before deleting the item.
-     */
-    private fun showConfirmationDialog() {
+    private fun showDeleteConfirmationDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(android.R.string.dialog_alert_title))
             .setMessage(getString(R.string.delete_question))
@@ -44,16 +38,10 @@ class ItemDetailFragment : Fragment() {
             .show()
     }
 
-    /**
-     * Deletes the current item and navigates to the list fragment.
-     */
     private fun deleteItem() {
         findNavController().navigateUp()
     }
 
-    /**
-     * Called when fragment is destroyed.
-     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

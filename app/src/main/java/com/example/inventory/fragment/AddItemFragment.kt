@@ -1,4 +1,4 @@
-package com.example.inventory
+package com.example.inventory.fragment
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
@@ -16,25 +16,14 @@ import com.example.inventory.databinding.FragmentAddItemBinding
 class AddItemFragment : Fragment() {
 
     private val navigationArgs: ItemDetailFragmentArgs by navArgs()
-
-    // Binding object instance corresponding to the fragment_add_item.xml layout
-    // This property is non-null between the onCreateView() and onDestroyView() lifecycle callbacks,
-    // when the view hierarchy is attached to the fragment
     private var _binding: FragmentAddItemBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, s: Bundle?): View {
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /**
-     * Called before fragment is destroyed.
-     */
     override fun onDestroyView() {
         super.onDestroyView()
         // Hide keyboard.
