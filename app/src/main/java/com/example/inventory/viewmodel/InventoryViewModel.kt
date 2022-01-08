@@ -38,16 +38,16 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
         }
     }
 
+    fun deleteItem(item: Item) {
+        viewModelScope.launch { itemDao.delete(item) }
+    }
+
     private fun insertItem(item: Item) {
-        viewModelScope.launch {
-            itemDao.insert(item)
-        }
+        viewModelScope.launch { itemDao.insert(item) }
     }
 
     private fun updateItem(item: Item) {
-        viewModelScope.launch {
-            itemDao.update(item)
-        }
+        viewModelScope.launch { itemDao.update(item) }
     }
 
 }
