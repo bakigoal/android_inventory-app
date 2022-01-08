@@ -8,7 +8,7 @@ import androidx.room.Update
 interface BaseDao<T> {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(t: T)
+    suspend fun insert(t: T)
 
     @Update
     suspend fun update(t: T)
