@@ -39,7 +39,7 @@ class ItemDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val itemId = navigationArgs.itemId
-        viewModel.retrieveItem(itemId).observe(this.viewLifecycleOwner) {
+        viewModel.getItemById(itemId).observe(this.viewLifecycleOwner) {
             item = it
             bind(item)
         }
@@ -53,6 +53,7 @@ class ItemDetailFragment : Fragment() {
             sellItem.isEnabled = viewModel.isStockAvailable(item)
             sellItem.setOnClickListener { viewModel.sellItem(item) }
             deleteItem.setOnClickListener { showDeleteConfirmationDialog() }
+            editItem.setOnClickListener { editItem() }
         }
     }
 
@@ -71,6 +72,14 @@ class ItemDetailFragment : Fragment() {
     private fun deleteItem() {
         viewModel.deleteItem(item)
         findNavController().navigateUp()
+    }
+
+    private fun editItem() {
+        val action = ItemDetailFragmentDirections.actionItemDetailFragmentToAddItemFragment(
+            getString(R.string.edit_fragment_title),
+            item.id
+        )
+        this.findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

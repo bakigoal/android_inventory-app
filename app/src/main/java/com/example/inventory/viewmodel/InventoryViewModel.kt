@@ -13,7 +13,7 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
 
     val allItems: LiveData<List<Item>> = itemDao.getAll().asLiveData()
 
-    fun retrieveItem(id: Int): LiveData<Item> {
+    fun getItemById(id: Int): LiveData<Item> {
         return itemDao.getById(id).asLiveData()
     }
 
@@ -30,6 +30,16 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
     }
 
     fun isStockAvailable(item: Item) = item.quantityInStock > 0
+
+    fun updateItem(id:Int, name: String, price: String, count: String) {
+        val newItem = Item(
+            id = id,
+            itemName = name,
+            itemPrice = price.toDouble(),
+            quantityInStock = count.toInt()
+        )
+        updateItem(newItem)
+    }
 
     fun sellItem(item: Item) {
         if (item.quantityInStock > 0) {
