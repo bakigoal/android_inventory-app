@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.inventory.InventoryApplication
-import com.example.inventory.database.entity.Item
 import com.example.inventory.databinding.FragmentAddItemBinding
 import com.example.inventory.viewmodel.InventoryViewModel
 import com.example.inventory.viewmodel.InventoryViewModelFactory
@@ -27,7 +26,6 @@ class AddItemFragment : Fragment() {
     private val viewModel: InventoryViewModel by activityViewModels {
         InventoryViewModelFactory((activity?.application as InventoryApplication).database.itemDao())
     }
-    private lateinit var item: Item
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, s: Bundle?): View {
         _binding = FragmentAddItemBinding.inflate(inflater, container, false)
