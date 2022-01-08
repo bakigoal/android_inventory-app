@@ -17,6 +17,9 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
         return itemDao.getById(id).asLiveData()
     }
 
+    fun isEntryValid(name: String, price: String, count: String) =
+        !(name.isBlank() || price.isBlank() || count.isBlank())
+
     fun addNewItem(name: String, price: String, count: String) {
         val newItem = Item(
             itemName = name,
@@ -26,12 +29,22 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
         insertItem(newItem)
     }
 
-    fun isEntryValid(name: String, price: String, count: String) =
-        !(name.isBlank() || price.isBlank() || count.isBlank())
+    fun sellItem(item: Item) {
+        if (item.quantityInStock > 0) {
+            val updatedItem = item.copy(quantityInStock = item.quantityInStock - 1)
+            updateItem(updatedItem)
+        }
+    }
 
     private fun insertItem(item: Item) {
         viewModelScope.launch {
             itemDao.insert(item)
+        }
+    }
+
+    private fun updateItem(item: Item) {
+        viewModelScope.launch {
+            itemDao.update(item)
         }
     }
 
