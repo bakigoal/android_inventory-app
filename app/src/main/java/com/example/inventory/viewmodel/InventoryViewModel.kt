@@ -29,6 +29,8 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
         insertItem(newItem)
     }
 
+    fun isStockAvailable(item: Item) = item.quantityInStock > 0
+
     fun sellItem(item: Item) {
         if (item.quantityInStock > 0) {
             val updatedItem = item.copy(quantityInStock = item.quantityInStock - 1)
